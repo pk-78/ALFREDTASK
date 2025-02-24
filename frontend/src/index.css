@@ -1,2 +1,33 @@
 @import "tailwindcss";
 
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 24px; /* Reduced width */
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 3px; /* Reduced padding */
+  background: conic-gradient(from 135deg at top, currentColor 90deg, #0000 0) 0
+      calc(50% - 2px) / 10px 5px,
+    radial-gradient(
+        farthest-side at bottom left,
+        #0000 calc(100% - 3px),
+        currentColor calc(100% - 2.5px) 99%,
+        #0000
+      )
+      top right / 50% 50% content-box content-box,
+    radial-gradient(
+        farthest-side at top,
+        #0000 calc(100% - 3px),
+        currentColor calc(100% - 2.5px) 99%,
+        #0000
+      )
+      bottom / 100% 50% content-box content-box;
+  background-repeat: no-repeat;
+  animation: l11 1s infinite linear;
+}
+@keyframes l11 {
+  100% {
+    transform: rotate(1turn);
+  }
+}

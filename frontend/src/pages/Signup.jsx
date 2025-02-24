@@ -13,6 +13,7 @@ const SignupForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,18 +23,20 @@ const SignupForm = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
     try {
       const response = await axios.post(`${url}/user/createUser`, formData);
 
       toast.success("User Created Successfully");
-      console.log(response.data);
+      // console.log(response.data);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create user");
       console.error(err);
       toast.error("Something went wrong");
     }
+    setLoading(false);
   };
 
   return (
@@ -68,9 +71,13 @@ const SignupForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition mb-4"
+          className="w-full bg-green-500 flex justify-center items-center text-white py-2 rounded-lg hover:bg-green-600 transition mb-4"
         >
-          Sign Up
+          {!loading ? (
+            <div className="">Signup</div>
+          ) : (
+            <div className="loader"></div>
+          )}
         </button>
 
         <p className="text-center text-gray-600">

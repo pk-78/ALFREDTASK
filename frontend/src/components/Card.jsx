@@ -7,36 +7,40 @@ export default function Card({ card, setCards, cards }) {
   const [ans, setAns] = useState(false);
   const today = new Date();
   const dayIndex = today.getDay();
-  console.log(dayIndex);
+  const [yesLoading, setYesLoading] = useState(false);
+  const [noLoading, setNoLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  //   console.log(dayIndex);
 
   const cardNumberHandler = async (newBoxNumber) => {
     try {
-      console.log(card._id, "Updating box number to:", newBoxNumber);
+      //   console.log(card._id, "Updating box number to:", newBoxNumber);
 
       const response = await axios.put(`${url}/card/cardnumberchange`, {
         id: card._id,
         boxNumber: newBoxNumber,
       });
 
-      console.log(response);
+      //   console.log(response);
 
       setCards((prevCards) =>
         prevCards.map((c) =>
           c._id === card._id ? { ...c, boxNumber: String(newBoxNumber) } : c
         )
       );
-      console.log("checking", cards);
+      //   console.log("checking", cards);
       setAns(false);
     } catch (error) {
       console.log(error);
     }
   };
   const deleteCard = async (id) => {
-    console.log(id);
+    // console.log(id);
     // console.log(`${url}/card/delete`);
+    setDeleteLoading(true);
     try {
       const response = await axios.delete(`${url}/card/delete/${id}`);
-      console.log(response);
+      //   console.log(response);
 
       toast.success("Deleted Successfully");
       setCards((prevCards) => prevCards.filter((c) => c._id !== card._id));
@@ -44,6 +48,7 @@ export default function Card({ card, setCards, cards }) {
       console.log(error);
       toast.error("Error in deleting");
     }
+    setDeleteLoading(false);
   };
 
   return (
@@ -62,9 +67,13 @@ export default function Card({ card, setCards, cards }) {
           </button>
           <button
             onClick={() => deleteCard(card._id)}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+            className="bg-red-500 text-white flex items-center justify-center px-4 rounded-lg hover:bg-red-600 transition"
           >
-            Delete
+            {!deleteLoading ? (
+              <div className="my-2">Delete</div>
+            ) : (
+              <div className="loader"></div>
+            )}
           </button>
         </div>
       ) : (
@@ -81,23 +90,44 @@ export default function Card({ card, setCards, cards }) {
             <div className="flex space-x-4">
               <button
                 onClick={() => {
+                  setYesLoading(true);
+
                   Number(card.boxNumber) === 5
                     ? cardNumberHandler(Number(card.boxNumber))
                     : cardNumberHandler(Number(card.boxNumber) + 1);
+
+                  setTimeout(() => {
+                    setYesLoading(false);
+                  }, 500); // Adjust delay as needed
                 }}
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                className="bg-green-500 text-white px-4 rounded-lg hover:bg-green-600 transition"
               >
-                Yes
+                {yesLoading ? (
+                  <div className="loader text-sm"></div> // Show loader when loading
+                ) : (
+                  <div className="my-2">Yes</div> // Show "Yes" text when not loading
+                )}
               </button>
+
               <button
                 onClick={() => {
+                  setNoLoading(true);
+
                   Number(card.boxNumber) === 1
                     ? cardNumberHandler(Number(card.boxNumber))
                     : cardNumberHandler(1);
+
+                  setTimeout(() => {
+                    setNoLoading(false);
+                  }, 500); // Adjust delay as needed
                 }}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                className="bg-red-500 text-white px-4 rounded-lg hover:bg-red-600 transition"
               >
-                No
+                {noLoading ? (
+                  <div className="loader"></div> // Show loader when loading
+                ) : (
+                  <div className="my-2">No</div> // Show "No" text when not loading
+                )}
               </button>
             </div>
           </div>

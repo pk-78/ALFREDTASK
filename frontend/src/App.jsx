@@ -7,7 +7,7 @@ import AddQuestion from "./components/AddQuetion";
 
 function App() {
   return (
-    <div className=" bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="">
       <Toaster />
 
       <Routes>

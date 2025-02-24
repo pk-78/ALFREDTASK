@@ -9,7 +9,7 @@ export default function FlashCard() {
   const [error, setError] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(id);
+  // console.log(id);
   const boxNumbers = ["1", "2", "3"];
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function FlashCard() {
       try {
         const response = await axios.get(`${url}/card/getcards/${id}`); // Adjust URL as needed
         setCards(response.data.cards.cards);
-        console.log(response.data.cards.cards);
+        // console.log(response.data.cards.cards);
       } catch (err) {
         setError("Failed to fetch cards");
         console.error(err);

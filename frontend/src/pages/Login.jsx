@@ -9,6 +9,7 @@ const LoginForm = () => {
   const [error, setError] = useState(""); // Error state for displaying errors
   const navigate = useNavigate(); // For navigation after successful login
   const [id, setId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,12 +18,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Reset error before submission
+    setLoading(true);
 
     try {
       const response = await axios.post(`${url}/user/loginUser`, formData);
 
       toast.success("Login Successful");
-      console.log(response.data.user._id);
+      // console.log(response.data.user._id);
       setId(response.data.user._id);
       navigate(`/${response.data.user._id}`); // Redirect to homepage or dashboard
     } catch (err) {
@@ -31,6 +33,7 @@ const LoginForm = () => {
       console.error(err);
       toast.error(errorMessage);
     }
+    setLoading(false);
   };
 
   return (
@@ -67,9 +70,13 @@ const LoginForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition mb-4"
+          className="w-full flex justify-center items-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition mb-4"
         >
-          Login
+          {!loading ? (
+            <div className="">Login</div>
+          ) : (
+            <div className="loader"></div>
+          )}
         </button>
 
         <p className="text-center text-gray-600">

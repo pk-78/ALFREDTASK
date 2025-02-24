@@ -19,10 +19,10 @@ export default function AddQuestion() {
   // Handle form submission
   const onSubmit = async (data) => {
     const newData = { ...data, id: id };
-    console.log(newData);
+    // console.log(newData);
     try {
       const response = await axios.post(`${url}/card/addcard`, newData);
-      console.log(response);
+      //   console.log(response);
 
       // Reset form after successful submission
       reset();
